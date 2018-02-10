@@ -168,10 +168,7 @@ func (db *DB) readHeader() error {
 	if err = db.readHeaderCounts(); err != nil {
 		return err
 	}
-	if err = db.readHeaderAddrs(); err != nil {
-		return err
-	}
-	return nil
+	return db.readHeaderAddrs()
 }
 
 // parses date in db file header
