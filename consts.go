@@ -18,7 +18,6 @@ const (
 	PX4 DbType = 4
 )
 
-
 // ProxyType is the type of proxy detected
 type ProxyType uint8
 
@@ -76,4 +75,3 @@ var fileEndianness = binary.LittleEndian
 
 // Maximum index count
 const maxIndexes = 65536
-

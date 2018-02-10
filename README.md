@@ -2,6 +2,10 @@
 
 IP2Location.com Proxy database parser for Golang
 
+[![Build Status](https://travis-ci.org/etf1/ip2proxy.svg?branch=master)](https://travis-ci.org/etf1/ip2proxy)
+[![Go Report Card](https://goreportcard.com/badge/github.com/etf1/ip2proxy)](https://goreportcard.com/report/github.com/etf1/ip2proxy)
+[![GoDoc](https://godoc.org/github.com/etf1/ip2proxy?status.svg)](https://godoc.org/github.com/etf1/ip2proxy)
+
 ## Install & prerequisites
 
 * Get the library:
