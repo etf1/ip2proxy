@@ -1,0 +1,12 @@
+language: go
+go:
+  - 1.9
+  - tip
+
+install:
+  - make deps
+
+script:
+  - make vet
+  - make lint
+  - make test

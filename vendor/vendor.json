@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "+RcTwqswcjEpErds31bZllnUGgI=",
+			"path": "github.com/juju/errors",
+			"revision": "8234c829496aaeae67c5c71235a2cbcc289e960a",
+			"revisionTime": "2017-05-09T13:42:57Z"
+		}
+	],
+	"rootPath": "github.com/etf1/ip2proxy"
+}

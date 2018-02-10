@@ -1,0 +1,5 @@
+{
+  "Cyclo": 10,
+  "Deadline": "1m",
+  "Disable": ["gotype", "megacheck"]
+}
