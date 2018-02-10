@@ -1,6 +1,6 @@
 GO           := go
 GINKGO       := ginkgo
-GOMETALINTER := gometalinter
+GOMETALINTER := gometalinter.v2
 GOVENDOR     := govendor
 
 pkgs = $(shell $(GO) list ./... | grep -v /vendor/)
