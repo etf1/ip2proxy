@@ -27,7 +27,7 @@ tools-update:
 deps: tools
 	@echo ">> (re)installing deps"
 	@$(GOMETALINTER) --install
-	@$(GOVENDOR) install
+	@$(GOVENDOR) ensure
 
 format:
 	@echo ">> formatting code"
