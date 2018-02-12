@@ -26,7 +26,6 @@ tools-update:
 
 deps: tools
 	@echo ">> (re)installing deps"
-	@$(GOMETALINTER) --install
 	@$(GOVENDOR) ensure
 
 format:
@@ -39,7 +38,7 @@ vet:
 
 lint:
 	@echo ">> checking code style"
-	@$(GOMETALINTER) --config=./.gometalinter.json .
+	@$(GOMETALINTER) --config=./.gometalinter.json $(pkgs)
 
 test:
 	@echo ">> running tests"
@@ -49,4 +48,4 @@ test:
 	@$(GO) tool cover -html  ip2proxy.coverprofile -o cover.html
 
 
-.PHONY: all deps format style vet test
+.PHONY: all
