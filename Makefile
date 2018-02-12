@@ -1,18 +1,31 @@
 GO           := go
 GINKGO       := ginkgo
 GOMETALINTER := gometalinter.v2
-GOVENDOR     := govendor
+GOVENDOR     := dep
+
+GOTOOLS       = github.com/onsi/ginkgo/ginkgo  \
+				github.com/onsi/gomega         \
+				github.com/golang/dep/cmd/dep  \
+				gopkg.in/alecthomas/gometalinter.v2
 
 pkgs = $(shell $(GO) list ./... | grep -v /vendor/)
 
 all: deps format vet lint test
 
-deps:
+tools:
+	@echo ">> ensuring tools are installed"
+	@- $(foreach GOTOOL,$(GOTOOLS),          \
+		$(GO) get $(GOTOOL) ;                \
+	)
+
+tools-update:
+	@echo ">> updating tools"
+	@- $(foreach GOTOOL,$(GOTOOLS),          \
+		$(GO) get -u $(GOTOOL) ;             \
+	)
+
+deps: tools
 	@echo ">> (re)installing deps"
-	@$(GO) get -u github.com/onsi/ginkgo/ginkgo
-	@$(GO) get -u github.com/onsi/gomega
-	@$(GO) get -u github.com/kardianos/govendor
-	@$(GO) get -u gopkg.in/alecthomas/gometalinter.v2
 	@$(GOMETALINTER) --install
 	@$(GOVENDOR) install
 
