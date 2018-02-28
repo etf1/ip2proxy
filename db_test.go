@@ -1,6 +1,7 @@
 package ip2proxy_test
 
 import (
+	"crypto/rand"
 	"path/filepath"
 	"time"
 
@@ -8,6 +9,7 @@ import (
 	. "github.com/onsi/gomega"
 
 	. "github.com/etf1/ip2proxy"
+	"io/ioutil"
 )
 
 var _ = Describe("Db", func() {
@@ -30,11 +32,11 @@ var _ = Describe("Db", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("cannot open/read db file: testdata/empty is empty or not redable"))
 		})
-		It("should returns an error on a small random file", func() {
+		It("should returns an error on a random file", func() {
 			db, err := Open(filepath.Join("testdata", "small"))
 			Expect(db).Should(BeNil())
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("cannot read db header: invalid db format or unknown db type"))
+			Expect(err.Error()).To(Equal("byte slice is empty or too small"))
 		})
 		It("should returns an error on a big random file", func() {
 			db, err := Open(filepath.Join("testdata", "random"))
@@ -44,6 +46,38 @@ var _ = Describe("Db", func() {
 		})
 		It("should returns a valid db instance on a valid file", func() {
 			db, err := Open(filepath.Join("testdata", "IP2PROXY-LITE-PX4.BIN"))
+			Expect(err).To(BeNil())
+			Expect(db).ToNot(BeNil())
+		})
+		It("should returns an error on a empty byte slice", func() {
+			db, err := FromBytes([]byte{})
+			Expect(db).Should(BeNil())
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("byte slice is empty or too small"))
+		})
+		It("should returns an error on a too small byte slice", func() {
+			db, err := FromBytes([]byte{1, 2, 3})
+			Expect(db).Should(BeNil())
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("byte slice is empty or too small"))
+		})
+		It("should returns an error on a random byte slice", func() {
+			b := make([]byte, 4096)
+			_, err := rand.Read(b)
+			if err != nil {
+				Fail("could not generate 4096 random bytes")
+			}
+			db, err := FromBytes(b)
+			Expect(db).Should(BeNil())
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("cannot read db header: invalid db format or unknown db type"))
+		})
+		It("should returns a valid db instance on a valid byte slice", func() {
+			b, err := ioutil.ReadFile(filepath.Join("testdata", "IP2PROXY-LITE-PX4.BIN"))
+			if err != nil {
+				Fail("could read db file")
+			}
+			db, err := FromBytes(b)
 			Expect(err).To(BeNil())
 			Expect(db).ToNot(BeNil())
 		})

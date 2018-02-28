@@ -62,16 +62,23 @@ func Open(path string) (*DB, error) {
 		}
 		return nil, errors.Annotate(err, "cannot open/read db file")
 	}
+	return FromBytes(data)
+}
+
+// FromBytes takes a byte slice corresponding to a IP2Proxy file and returns the parsed DB object.
+func FromBytes(data []byte) (*DB, error) {
+	if len(data) < 1024 {
+		return nil, fmt.Errorf("byte slice is empty or too small")
+	}
 	db := &DB{
 		data:     data,
 		dataSize: uint32(len(data)),
 	}
-
-	if err = db.readHeader(); err != nil {
+	if err := db.readHeader(); err != nil {
 		return nil, errors.Annotate(err, "cannot read db header")
 	}
 	db.computePositions()
-	if err = db.readIPv4Indexes(); err != nil {
+	if err := db.readIPv4Indexes(); err != nil {
 		return nil, errors.Annotate(err, "cannot read db index")
 	}
 	return db, nil
