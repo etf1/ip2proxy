@@ -422,20 +422,26 @@ func (db *DB) readRecordISP(res *Result, off uint32) error {
 // reads a record
 func (db *DB) readIPV4Record(off uint32) (*Result, error) {
 	r := &Result{}
-	if err := db.readRecordProxy(r, off); err != nil {
-		return nil, err
-	}
 	if err := db.readRecordCountry(r, off); err != nil {
 		return nil, err
 	}
-	if err := db.readRecordRegion(r, off); err != nil {
-		return nil, err
+	if db.Type() >= PX2 {
+		if err := db.readRecordProxy(r, off); err != nil {
+			return nil, err
+		}
 	}
-	if err := db.readRecordCity(r, off); err != nil {
-		return nil, err
+	if db.Type() >= PX3 {
+		if err := db.readRecordRegion(r, off); err != nil {
+			return nil, err
+		}
 	}
-	if err := db.readRecordISP(r, off); err != nil {
-		return nil, err
+	if db.Type() == PX4 {
+		if err := db.readRecordCity(r, off); err != nil {
+			return nil, err
+		}
+		if err := db.readRecordISP(r, off); err != nil {
+			return nil, err
+		}
 	}
 	return r, nil
 }
